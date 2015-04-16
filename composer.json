@@ -1,0 +1,20 @@
+{
+    "name": "nasution/zenziva",
+    "description": "Zenziva - Indonesia Online SMS Gateway",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mulia Arifandi Nasution",
+            "email": "mul14.net@gmail.com"
+        }
+    ],
+    "require": {
+        "php-curl-class/php-curl-class": "~2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nasution\\Zenziva\\": "src/Nasution/Zenziva"
+        }
+    },
+    "minimum-stability": "stable"
+}
