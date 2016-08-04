@@ -15,15 +15,18 @@ class Zenziva
         }
     }
 
+    /**
+     * Setup credentials
+     */
     public function setup($userkey, $passkey)
     {
         $this->userkey = $userkey;
         $this->passkey = $passkey;
-
     }
 
     /**
-     * Send to somewhere
+     * Send to http request to Zenziva API
+     * 
      * @param string $target
      * @param array $payload
      * @return null
@@ -41,10 +44,6 @@ class Zenziva
         );
 
         $query = '?' . http_build_query($credentials);
-
-        $obj = new self::__constru
-
-
 
         $url = $this->baseURL . $target . $query;
 
@@ -78,5 +77,4 @@ class Zenziva
     {
         return static::send('smsapibalance.php');
     }
-
 }
