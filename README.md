@@ -1,6 +1,6 @@
 # Zenziva SMS Client
 
-[Zenziva](https://zenziva.net) SMS client. 
+[Zenziva](https://zenziva.net) SMS client.
 
 ## Installation
 
@@ -14,7 +14,7 @@ composer require nasution/zenziva-sms
 
 ### Standalone usage
 
-Make sure you already have Zenziva account. 
+Make sure you already have Zenziva account.
 
 ```php
 require 'vendor/autoload.php';
@@ -23,12 +23,17 @@ use Nasution\ZenzivaSms\Client as Sms;
 
 $sms = new Sms('userkey', 'passkey');
 
-
+// Simple usage
 $sms->send('08123456789', 'Halo apa kabar?');
 
-// Another method
-
+// Alternative way
 $sms->to('08123456789')
+    ->text('Halo apa kabar?')
+    ->send();
+
+// With custom sub-domain (if you choose paid for "SMS Center" plan)
+$sms->subdomain('hello')
+    ->to('08123456789')
     ->text('Halo apa kabar?')
     ->send();
 ```
@@ -41,7 +46,7 @@ You need to register the service provider. Open `config/app.php`, add this line 
 Nasution\ZenzivaSms\NotificationServiceProvider::class,
 ```
 
-Insert this inside your `config/services.php`, 
+Insert this inside your `config/services.php`,
 
 ```php
 'zenziva' => [
@@ -51,7 +56,7 @@ Insert this inside your `config/services.php`,
 ```
 
 Add this method to your `User` model (or any notifiable model),
-  
+
 ```php
 public function routeNotificationForZenzivaSms()
 {
@@ -83,7 +88,7 @@ Route::get('/', function () {
     // Send notification to all users
     $users = User::all();
     \Notification::send($users, new PingNotification);
-    
+
     // Or just to one user
     User::find(1)->notify(new PingNotification);
 });
