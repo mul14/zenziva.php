@@ -50,7 +50,7 @@ Insert this inside your `config/services.php`,
 ],
 ```
 
-Add this line to your `User` model (or any notifiable model),
+Add this method to your `User` model (or any notifiable model),
   
 ```php
 public function routeNotificationForZenzivaSms()
@@ -62,7 +62,6 @@ public function routeNotificationForZenzivaSms()
 On your Notification class, add this inside via method. Like so
 
 ```php
-
 use Nasution\ZenzivaSms\NotificationChannel as ZenzivaSms;
 
 // ...
@@ -75,15 +74,17 @@ public function via($notifiable)
 
 Now, we are ready to use notification feature in Laravel 5.3
 
-```
+```php
 use App\User;
+use App\Notifications\PingNotification;
 
 Route::get('/', function () {
+
     // Send notification to all users
     $users = User::all();
     \Notification::send($users, new PingNotification);
     
-    // Or just for one user
+    // Or just to one user
     User::find(1)->notify(new PingNotification);
 });
 ```
