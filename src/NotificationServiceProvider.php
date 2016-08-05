@@ -24,6 +24,10 @@ class NotificationServiceProvider extends ServiceProvider
                 $sms->subdomain($subdomain);
             }
 
+            if (config('services.zenziva.masking')) {
+                $sms->masking();
+            }
+
             return $sms;
         });
     }

@@ -31,6 +31,9 @@ $sms->to('08123456789')
     ->text('Halo apa kabar?')
     ->send();
 
+// SMS masking
+$sms->masking()->send('08123456789', 'Halo apa kabar?');
+
 // With custom sub-domain (if you choose paid for "SMS Center" plan)
 $sms->subdomain('hello')
     ->to('08123456789')
@@ -53,6 +56,7 @@ Insert this inside your `config/services.php`,
     'userkey' => 'your-userkey',
     'passkey' => 'your-password',
     'subdomain' => '',
+    'masking' => false,
 ],
 ```
 

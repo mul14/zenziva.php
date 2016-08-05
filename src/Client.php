@@ -49,6 +49,13 @@ class Client
     public $subdomain = 'reguler';
 
     /**
+     * SMS type. Masking or reguler.
+     *
+     * @var string
+     */
+    public $type = 'reguler';
+
+    /**
      * Create the instance
      *
      * @param string $username
@@ -103,6 +110,20 @@ class Client
     }
 
     /**
+     * Set masking
+     *
+     * @param boolean $masking  Masking
+     *
+     * @return self
+     */
+    public function masking($masking = true)
+    {
+        $this->type = $masking ? 'masking' : 'reguler';
+
+        return $this;
+    }
+
+    /**
      * @param $to  Phone number
      * @param $text  Message
      *
@@ -136,6 +157,7 @@ class Client
         $params = http_build_query([
             'userkey' => $this->username,
             'passkey' => $this->password,
+            'tipe'    => $this->type,
             'nohp'    => $this->to,
             'pesan'   => $this->text,
         ]);
