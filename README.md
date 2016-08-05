@@ -52,6 +52,7 @@ Insert this inside your `config/services.php`,
 'zenziva' => [
     'userkey' => 'your-userkey',
     'passkey' => 'your-password',
+    'subdomain' => '',
 ],
 ```
 

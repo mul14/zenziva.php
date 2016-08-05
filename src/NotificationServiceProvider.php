@@ -15,10 +15,16 @@ class NotificationServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('Nasution\ZenzivaSms\Client', function () {
-            return new Sms(
+            $sms = new Sms(
                 config('services.zenziva.userkey'),
                 config('services.zenziva.passkey')
             );
+
+            if ($subdomain = config('services.zenziva.subdomain')) {
+                $sms->subdomain($subdomain);
+            }
+
+            return $sms;
         });
     }
 }
