@@ -11,7 +11,7 @@ class Client
      *
      * @var string
      */
-    protected $url = 'https://reguler.zenziva.net/apps/smsapi.php';
+    protected $url = 'https://{subdomain}.zenziva.net/apps/smsapi.php';
 
     /**
      * Zenziva username
@@ -40,6 +40,13 @@ class Client
      * @var string
      */
     public $text;
+
+    /**
+     * Sub-domain
+     *
+     * @var string
+     */
+    public $subdomain = 'reguler';
 
     /**
      * Create the instance
@@ -82,6 +89,20 @@ class Client
     }
 
     /**
+     * Set sub-domain
+     *
+     * @param $subdomain  Sub-domain
+     *
+     * @return self
+     */
+    public function subdomain($subdomain)
+    {
+        $this->subdomain = $subdomain;
+
+        return $this;
+    }
+
+    /**
      * @param $to  Phone number
      * @param $text  Message
      *
@@ -110,6 +131,8 @@ class Client
      */
     protected function buildQuery()
     {
+        $url = str_replace('{subdomain}', $this->subdomain, $this->url);
+
         $params = http_build_query([
             'userkey' => $this->username,
             'passkey' => $this->password,
@@ -117,6 +140,6 @@ class Client
             'pesan'   => $this->text,
         ]);
 
-        return $this->url . '?' . $params;
+        return $url . '?' . $params;
     }
 }
