@@ -161,6 +161,8 @@ class Client
             'nohp'    => $this->to,
             'pesan'   => $this->text,
         ]);
+        
+        $params = urldecode($params);
 
         return $url . '?' . $params;
     }
