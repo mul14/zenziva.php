@@ -190,6 +190,21 @@ class Client
     }
 
     /**
+     * @param $text  Message
+     *
+     * @return \Requests_Response
+     */
+    public function sendToAll($text = '')
+    {
+        $this->text = ! empty($text) ? $text : $this->text;
+        $this->filename = 'sendsmsall';
+
+        $url = $this->buildQuery();
+
+        return Requests::get($url);
+    }
+
+    /**
      * Build query string
      *
      * @return string
