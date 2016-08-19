@@ -68,6 +68,19 @@ class Client
     }
 
     /**
+     * Create the instance
+     *
+     * @param string $username
+     * @param string $password
+     *
+     * @return self
+     */
+    public static function make($username, $password)
+    {
+        return new static($username, $password);
+    }
+
+    /**
      * Set destination phone number
      *
      * @param $to  Phone number
@@ -161,7 +174,7 @@ class Client
             'nohp'    => $this->to,
             'pesan'   => $this->text,
         ]);
-        
+
         $params = urldecode($params);
 
         return $url . '?' . $params;
