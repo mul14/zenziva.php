@@ -11,7 +11,7 @@ class Client
      *
      * @var string
      */
-    protected $url = 'https://{subdomain}.zenziva.net/apps/smsapi.php';
+    protected $url = 'https://{subdomain}.zenziva.net/apps/{filename}.php';
 
     /**
      * Zenziva username
@@ -47,6 +47,13 @@ class Client
      * @var string
      */
     public $subdomain = 'reguler';
+
+    /**
+     * File name
+     *
+     * @var string
+     */
+    public $filename;
 
     /**
      * SMS type. Masking or reguler.
@@ -147,10 +154,34 @@ class Client
     {
         $this->to   = ! empty($to) ? $to : $this->to;
         $this->text = ! empty($text) ? $text : $this->text;
+        $this->filename = 'smsapi';
 
         if (empty($this->to))
         {
             throw new \Exception('Destination phone number is empty.');
+        }
+
+        $url = $this->buildQuery();
+
+        return Requests::get($url);
+    }
+
+    /**
+     * @param $to  Group name
+     * @param $text  Message
+     *
+     * @return \Requests_Response
+     * @throws \Exception
+     */
+    public function sendToGroup($to = '', $text = '')
+    {
+        $this->to   = ! empty($to) ? $to : $this->to;
+        $this->text = ! empty($text) ? $text : $this->text;
+        $this->filename = 'sendsmsgroup';
+
+        if (empty($this->to))
+        {
+            throw new \Exception('Group name is empty.');
         }
 
         $url = $this->buildQuery();
@@ -165,18 +196,29 @@ class Client
      */
     protected function buildQuery()
     {
-        $url = str_replace('{subdomain}', $this->subdomain, $this->url);
+        $url = $this->url;
+        $url = str_replace('{subdomain}', $this->subdomain, $url);
+        $url = str_replace('{filename}', $this->filename, $url);
 
-        $params = http_build_query([
+        $params = [
             'userkey' => $this->username,
             'passkey' => $this->password,
             'tipe'    => $this->type,
-            'nohp'    => $this->to,
             'pesan'   => $this->text,
-        ]);
+        ];
 
-        $params = urldecode($params);
+        if ($this->filename === 'smsapi') {
+            $params['nohp'] = $this->to;
+        }
 
-        return $url . '?' . $params;
+        if ($this->filename === 'sendsmsgroup') {
+            $params['grup'] = $this->to;
+        }
+
+        $query = http_build_query($params);
+
+        $query = urldecode($query);
+
+        return $url . '?' . $query;
     }
 }
