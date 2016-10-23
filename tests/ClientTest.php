@@ -12,7 +12,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
-            ->setMethods(null)
+            ->setMethods(['doRequest'])
             ->getMock();
 
         $sms->to('085225577999')->send();
@@ -22,7 +22,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
-            ->setMethods(null)
+            ->setMethods(['send'])
             ->getMock();
 
         $sms->to('085225577999')->text('')->send();
@@ -33,11 +33,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage Destination phone number is empty.
      */
-    public function test_send_method_should_throw_exception_when_to_is_not_provided($call)
+    public function test_send_method_should_throw_exception_when_to_is_not_provided($case)
     {
-        $sms = new SMS('john', 'secretPassword');
+        $sms = $this->getMockBuilder(SMS::class)
+            ->setConstructorArgs(['john', 'password'])
+            ->setMethods(['text'])
+            ->getMock();
 
-        $call($sms);
+        $case($sms);
     }
 
      /**
@@ -48,6 +51,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
         return [
             [
                 function (Sms $sms) {
+                    $sms->expects($this->once())
+                        ->method('text')
+                        ->will($this->returnSelf());
+
                     $sms->text('')->send();
                 }
             ],
@@ -58,12 +65,20 @@ class ClientTest extends PHPUnit_Framework_TestCase
             ],
             [
                 function (Sms $sms) {
+                    $sms->expects($this->once())
+                        ->method('text')
+                        ->will($this->returnSelf());
+
                     $sms->text('Urgent message!')
                         ->send();
                 }
             ],
             [
                 function (Sms $sms) {
+                     $sms->expects($this->once())
+                        ->method('text')
+                        ->will($this->returnSelf());
+
                     $sms->text('Urgent message')
                         ->send();
                 }
@@ -77,7 +92,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
      */
     public function test_send_method_should_throw_exception_when_sub_domain_is_not_set()
     {
-        $sms = new SMS('john', 'secretPassword');
+        $sms = $this->getMockBuilder(SMS::class)
+            ->setConstructorArgs(['john', 'password'])
+            ->setMethods(['doRequest'])
+            ->getMock();
 
         $sms->subdomain('')
             ->text('Urgent message')
@@ -121,7 +139,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
      */
     public function test_text_should_be_type_of_string($call)
     {
-        $sms = new Sms('john', 'password');
+        $sms = $this->getMockBuilder(SMS::class)
+            ->setConstructorArgs(['john', 'password'])
+            ->setMethods(['doRequest'])
+            ->getMock();
         
         $call($sms);
     }
@@ -163,5 +184,25 @@ class ClientTest extends PHPUnit_Framework_TestCase
                 },
             ],
         ];
+    }
+
+    public function test_correct_usage_not_throw_any_error()
+    {
+        $sms = $this->getMockBuilder(SMS::class)
+            ->setConstructorArgs(['john', 'password'])
+            ->setMethods([])
+            ->setMethods(['send'])
+            ->getMock();
+
+        $sms->send('085225575999', 'Hello');
+        $sms->to('085225575999')->text('Hello')->send();
+        $sms->text('Hello')->send('085225575999');
+        $sms->subdomain('app')->send('085225575999', 'Hello');
+        $sms->subdomain('app')->to('085225575999')->text('Hello')->send();
+        $sms->masking()->send('085225575999', 'Hello');
+        $sms->masking()->text('Hello')->send('085225575999');
+        $sms->masking()->text('Hello')->to('085225575999')->send();
+        $sms->subdomain('app')->masking()->send('085225575999', 'Hello');
+        $sms->subdomain('app')->masking()->text('Hello')->to('085225575999')->send();
     }
 }
