@@ -113,4 +113,55 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=Some message', $buildQueryMethod->invoke($sms));
     }
+
+    /**
+     * @dataProvider sendWithInvalidTextTypeCalls
+     * @expectedException \Exception
+     * @@expectedExceptionMessage Text should be string type.
+     */
+    public function test_text_should_be_type_of_string($call)
+    {
+        $sms = new Sms('john', 'password');
+        
+        $call($sms);
+    }
+
+    /**
+     * @return array
+     */
+    public function sendWithInvalidTextTypeCalls()
+    {
+        return [
+            [
+                function (Sms  $sms) {
+                    $sms->text(0)->send('085225575696');
+                },
+            ],
+            [
+                function (Sms  $sms) {
+                    $sms->text(null)->send('085225575696');
+                },
+            ],
+            [
+                function (Sms  $sms) {
+                    $sms->text(false)->send('085225575696');
+                },
+            ],
+            [
+                function (Sms  $sms) {
+                    $sms->send('085225575696', false);
+                },
+            ],
+            [
+                function (Sms  $sms) {
+                    $sms->send('085225575696', 1);
+                },
+            ],
+            [
+                function (Sms  $sms) {
+                    $sms->send('085225575696', null);
+                },
+            ],
+        ];
+    }
 }

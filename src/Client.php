@@ -93,6 +93,10 @@ class Client
      */
     public function text($text)
     {
+        if (! is_string($text)) {
+            throw new \Exception('Text should be string type.');
+        }
+
         $this->text = $text;
 
         return $this;
@@ -135,6 +139,10 @@ class Client
      */
     public function send($to = '', $text = '')
     {
+        if (! is_string($text)) {
+            throw new \Exception('Text should be string type.');
+        }
+
         $this->to   = ! empty($to) ? $to : $this->to;
         $this->text = ! empty($text) ? $text : $this->text;
 
