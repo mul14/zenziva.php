@@ -142,6 +142,10 @@ class Client
             throw new \Exception('Destination phone number is empty.');
         }
 
+        if (is_null($this->text)) {
+            throw new \Exception('Text is not set.');
+        }
+
         $url = $this->buildQuery();
 
         return Requests::get($url);
