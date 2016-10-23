@@ -156,6 +156,15 @@ class Client
 
         $url = $this->buildQuery();
 
+        return $this->doRequest($url);
+    }
+
+    /**
+     * @param  string $url
+     * @return \Requests_Response
+     */
+    private function doRequest($url)
+    {
         return Requests::get($url);
     }
 
