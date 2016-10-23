@@ -6,6 +6,9 @@ use Requests;
 
 class Client
 {
+    const TYPE_REGULER = 'reguler';
+    const TYPE_MASKING = 'masking';
+
     /**
      * Zenziva end point
      *
@@ -53,7 +56,7 @@ class Client
      *
      * @var string
      */
-    public $type = 'reguler';
+    public $type = self::TYPE_REGULER;
 
     /**
      * Create the instance
@@ -118,7 +121,7 @@ class Client
      */
     public function masking($masking = true)
     {
-        $this->type = $masking ? 'masking' : 'reguler';
+        $this->type = $masking ? self::TYPE_MASKING : self::TYPE_REGULER;
 
         return $this;
     }
@@ -135,8 +138,7 @@ class Client
         $this->to   = ! empty($to) ? $to : $this->to;
         $this->text = ! empty($text) ? $text : $this->text;
 
-        if (empty($this->to))
-        {
+        if (empty($this->to)) {
             throw new \Exception('Destination phone number is empty.');
         }
 
@@ -152,6 +154,10 @@ class Client
      */
     protected function buildQuery()
     {
+        if (empty($this->subdomain)) {
+            throw new \Exception('Sub domain is not set.');
+        }
+
         $url = str_replace('{subdomain}', $this->subdomain, $this->url);
 
         $params = http_build_query([
