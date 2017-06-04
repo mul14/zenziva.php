@@ -41,13 +41,15 @@ $sms->subdomain('hello')
     ->send();
 ```
 
-### Use with Laravel 5.3 Notification
+### Use with Laravel Notification
 
-You need to register the service provider. Open `config/app.php`, add this line inside `providers`.
+Starts from Laravel 5.3, you can use Laravel Notification feature. You need to register the service provider. Open `config/app.php`, add this line inside `providers`.
 
 ```php
 Nasution\ZenzivaSms\NotificationServiceProvider::class,
 ```
+
+> Note: If you use Laravel 5.5 or higher, you can skip register service provider manually.
 
 Insert this inside your `config/services.php`,
 
