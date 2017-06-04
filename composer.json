@@ -1,7 +1,7 @@
 {
     "name": "nasution/zenziva-sms",
     "description": "Zenziva - Indonesia Online SMS Gateway",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "type": "library",
     "license": "MIT",
     "keywords": ["sms", "zenziva", "laravel"],
@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "rmccue/requests": "~1.6.1"
+        "rmccue/requests": "~1.7.0"
     },
     "autoload": {
         "psr-4": {
