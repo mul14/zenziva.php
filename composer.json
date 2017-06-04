@@ -28,5 +28,12 @@
         "classmap": [
             "tests"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nasution\\ZenzivaSms\\NotificationServiceProvider"
+            ]
+        }
     }
 }
