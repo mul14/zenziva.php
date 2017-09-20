@@ -165,7 +165,10 @@ class Client
      */
     private function doRequest($url)
     {
-        return Requests::get($url);
+        $options = array(
+            'timeout' => 60,
+        );
+        return Requests::get($url,$options);
     }
 
     /**
