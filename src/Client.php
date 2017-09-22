@@ -6,6 +6,7 @@ use Requests;
 
 class Client
 {
+    const TIMEOUT = 60;
     const TYPE_REGULER = 'reguler';
     const TYPE_MASKING = 'masking';
 
@@ -166,10 +167,10 @@ class Client
     private function doRequest($url)
     {
         $options = [
-            'timeout' => 60,
+            'timeout' => self::TIMEOUT,
         ];
 
-        return Requests::get($url, $options);
+        return Requests::get($url, [], $options);
     }
 
     /**
@@ -192,7 +193,7 @@ class Client
             'nohp'    => $this->to,
             'pesan'   => $this->text,
         ]);
-        
+
         $params = urldecode($params);
 
         return $url . '?' . $params;
