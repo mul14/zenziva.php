@@ -72,6 +72,20 @@ class Client
     }
 
     /**
+     * Change default URL or get current URL
+     *
+     * @param string $url
+     */
+    public function url($url = '')
+    {
+        if (!$url) return $this->url;
+
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
      * Set destination phone number
      *
      * @param $to  Phone number
