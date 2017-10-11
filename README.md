@@ -39,6 +39,12 @@ $sms->subdomain('hello')
     ->to('08123456789')
     ->text('Halo apa kabar?')
     ->send();
+
+// Change default URL
+$sms->url('https://reguler.zenziva.co.id/apps/smsapi.php')
+    ->to('08123456789')
+    ->text('Halo')
+    ->send();
 ```
 
 ### Use with Laravel Notification
