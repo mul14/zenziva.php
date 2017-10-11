@@ -15,7 +15,7 @@ class Client
      *
      * @var string
      */
-    protected $url = 'https://{subdomain}.zenziva.net/apps/smsapi.php';
+    protected $url = 'http://{subdomain}.zenziva.co.id/apps/smsapi.php';
 
     /**
      * Zenziva username
