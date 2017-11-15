@@ -35,7 +35,7 @@ class NotificationChannel
     public function send(Collection $notifiables, Notification $notification)
     {
         foreach ($notifiables as $notifiable) {
-            if ( ! $to = $notifiable->routeNotificationFor('zenziva-sms')) {
+            if (! $to = $notifiable->routeNotificationFor('zenziva-sms')) {
                 continue;
             }
 

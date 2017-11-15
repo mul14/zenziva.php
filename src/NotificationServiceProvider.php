@@ -27,6 +27,10 @@ class NotificationServiceProvider extends ServiceProvider
             if (config('services.zenziva.masking')) {
                 $sms->masking();
             }
+            
+            if (in_array(config('services.zenziva.schema'), ['http', 'https'])) {
+                $sms->schema(config('services.zenziva.schema'));
+            }
 
             return $sms;
         });
