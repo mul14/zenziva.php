@@ -206,14 +206,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $sms->subdomain('app')->masking()->text('Hello')->to('085225575999')->send();
     }
     
-    public function test_buildQuery_method_should_works_properly_using_custom_schema()
+    public function test_buildQuery_method_should_works_properly_using_custom_scheme()
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
             ->setMethods(null)
             ->getMock();
 
-        $sms->schema('http')->text('')->to('085225577999');
+        $sms->scheme('http')->text('')->to('085225577999');
 
         $reflection = new \ReflectionClass(get_class($sms));
         $buildQueryMethod = $reflection->getMethod('buildQuery');
@@ -222,14 +222,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
     }
     
-    public function test_buildQuery_method_should_works_properly_using_custom_schema_and_subdomain()
+    public function test_buildQuery_method_should_works_properly_using_custom_scheme_and_subdomain()
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
             ->setMethods(null)
             ->getMock();
 
-        $sms->schema('http')->subdomain('matriphe')->text('')->to('085225577999');
+        $sms->scheme('http')->subdomain('matriphe')->text('')->to('085225577999');
 
         $reflection = new \ReflectionClass(get_class($sms));
         $buildQueryMethod = $reflection->getMethod('buildQuery');
@@ -238,14 +238,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://matriphe.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
     }
     
-    public function test_buildQuery_method_should_fallback_to_https_on_wron_schema()
+    public function test_buildQuery_method_should_fallback_to_https_on_wron_scheme()
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
             ->setMethods(null)
             ->getMock();
 
-        $sms->schema('ftp')->text('')->to('085225577999');
+        $sms->scheme('ftp')->text('')->to('085225577999');
 
         $reflection = new \ReflectionClass(get_class($sms));
         $buildQueryMethod = $reflection->getMethod('buildQuery');

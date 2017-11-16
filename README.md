@@ -65,7 +65,7 @@ Insert this inside your `config/services.php`,
     'passkey' => 'your-password',
     'subdomain' => '',
     'masking' => false,
-    'schema' => 'https',
+    'scheme' => 'https',
 ],
 ```
 
