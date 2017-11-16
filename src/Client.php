@@ -9,13 +9,14 @@ class Client
     const TIMEOUT = 60;
     const TYPE_REGULER = 'reguler';
     const TYPE_MASKING = 'masking';
+    const SCHEME = 'https';
 
     /**
      * Zenziva end point
      *
      * @var string
      */
-    protected $url = 'https://{subdomain}.zenziva.net/apps/smsapi.php';
+    protected $url = '{scheme}://{subdomain}.zenziva.net/apps/smsapi.php';
 
     /**
      * Zenziva username
@@ -51,6 +52,13 @@ class Client
      * @var string
      */
     public $subdomain = 'reguler';
+    
+    /**
+     * URL scheme
+     *
+     * @var string
+     */
+    public $scheme = 'https';
 
     /**
      * SMS type. Masking or reguler.
@@ -78,7 +86,9 @@ class Client
      */
     public function url($url = '')
     {
-        if (!$url) return $this->url;
+        if (!$url) {
+            return $this->url;
+        }
 
         $this->url = $url;
 
@@ -144,6 +154,20 @@ class Client
 
         return $this;
     }
+    
+    /**
+     * Set URL scheme
+     *
+     * @param $scheme  scheme
+     *
+     * @return self
+     */
+    public function scheme($scheme)
+    {
+        $this->scheme = $scheme == 'http' ? 'http' : self::SCHEME;
+
+        return $this;
+    }
 
     /**
      * @param $to  Phone number
@@ -199,6 +223,7 @@ class Client
         }
 
         $url = str_replace('{subdomain}', $this->subdomain, $this->url);
+        $url = str_replace('{scheme}', $this->scheme, $url);
 
         $params = http_build_query([
             'userkey' => $this->username,
