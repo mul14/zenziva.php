@@ -206,7 +206,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $sms->subdomain('app')->masking()->text('Hello')->to('085225575999')->send();
     }
     
-    public function test_buildQuery_method_should_works_properly_using_custom_scheme()
+    public function test_buildQuery_method_should_works_properly_using_http_scheme()
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
@@ -222,7 +222,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
     }
     
-    public function test_buildQuery_method_should_works_properly_using_custom_scheme_and_subdomain()
+    public function test_buildQuery_method_should_works_properly_using_http_scheme_and_subdomain()
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
@@ -238,7 +238,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://matriphe.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
     }
     
-    public function test_buildQuery_method_should_fallback_to_https_on_wron_scheme()
+    public function test_buildQuery_method_should_fallback_to_https_on_wrong_scheme()
     {
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
