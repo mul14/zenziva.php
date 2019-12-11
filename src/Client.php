@@ -7,9 +7,10 @@ use Requests;
 class Client
 {
     const TIMEOUT = 60;
-    const TYPE_REGULER = 'reguler';
-    const TYPE_MASKING = 'masking';
+    const TYPE_OTP = 'otp';
     const SCHEME = 'https';
+    const SUBDOMAIN_REGULER = 'reguler';
+    const SUBDOMAIN_MASKING = 'alpha';
 
     /**
      * Zenziva end point
@@ -150,7 +151,21 @@ class Client
      */
     public function masking($masking = true)
     {
-        $this->type = $masking ? self::TYPE_MASKING : self::TYPE_REGULER;
+        $this->subdomain = $masking ? self::SUBDOMAIN_MASKING : self::SUBDOMAIN_REGULER;
+
+        return $this;
+    }
+
+    /**
+     * Set as OTP
+     *
+     * @param boolean $otp  OTP
+     *
+     * @return self
+     */
+    public function otp($otp = true)
+    {
+        $this->type = $otp ? self::TYPE_OTP : null;
 
         return $this;
     }
@@ -224,14 +239,20 @@ class Client
 
         $url = str_replace('{subdomain}', $this->subdomain, $this->url);
         $url = str_replace('{scheme}', $this->scheme, $url);
+        
+        $type = [];
+        if ($this->type) {
+            $type = [
+                'type' => $this->type,
+            ];
+        }
 
-        $params = http_build_query([
+        $params = http_build_query(array_merge([
             'userkey' => $this->username,
             'passkey' => $this->password,
-            'tipe'    => $this->type,
             'nohp'    => $this->to,
             'pesan'   => $this->text,
-        ]);
+        ], $type));
 
         $params = urldecode($params);
 
