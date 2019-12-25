@@ -62,11 +62,11 @@ class Client
     public $scheme = 'https';
 
     /**
-     * SMS type. Masking or reguler.
+     * SMS type. OTP or not.
      *
      * @var string
      */
-    public $type = self::TYPE_REGULER;
+    public $type;
 
     /**
      * Create the instance
