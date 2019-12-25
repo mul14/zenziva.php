@@ -1,6 +1,6 @@
 # Zenziva SMS Client
 
-[Zenziva](https://zenziva.net) SMS client.
+[Zenziva](https://zenziva.net) SMS client. Read their [docs](http://www.zenziva.id/dokumentasi) for more information.
 
 ## Installation
 
@@ -33,6 +33,9 @@ $sms->to('08123456789')
 
 // SMS masking
 $sms->masking()->send('08123456789', 'Halo apa kabar?');
+
+// For OTP
+$sms->masking()->otp()->send('08123456789', 'This is OTP code');
 
 // With custom sub-domain (if you choose paid for "SMS Center" plan)
 $sms->subdomain('hello')

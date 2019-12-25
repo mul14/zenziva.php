@@ -116,7 +116,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $buildQueryMethod = $reflection->getMethod('buildQuery');
         $buildQueryMethod->setAccessible(true);
 
-        $this->assertEquals('https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
+        $this->assertEquals(
+            'https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&nohp=085225577999&pesan=',
+            $buildQueryMethod->invoke($sms)
+        );
 
         $sms = $this->getMockBuilder(SMS::class)
             ->setConstructorArgs(['john', 'password'])
@@ -129,7 +132,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $buildQueryMethod = $reflection->getMethod('buildQuery');
         $buildQueryMethod->setAccessible(true);
 
-        $this->assertEquals('https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=Some message', $buildQueryMethod->invoke($sms));
+        $this->assertEquals(
+            'https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&nohp=085225577999&pesan=Some message',
+            $buildQueryMethod->invoke($sms)
+        );
     }
 
     /**
@@ -143,7 +149,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
             ->setConstructorArgs(['john', 'password'])
             ->setMethods(['doRequest'])
             ->getMock();
-        
+
         $call($sms);
     }
 
@@ -205,7 +211,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $sms->subdomain('app')->masking()->send('085225575999', 'Hello');
         $sms->subdomain('app')->masking()->text('Hello')->to('085225575999')->send();
     }
-    
+
     public function test_buildQuery_method_should_works_properly_using_http_scheme()
     {
         $sms = $this->getMockBuilder(SMS::class)
@@ -219,9 +225,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $buildQueryMethod = $reflection->getMethod('buildQuery');
         $buildQueryMethod->setAccessible(true);
 
-        $this->assertEquals('http://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
+        $this->assertEquals(
+            'http://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&nohp=085225577999&pesan=',
+            $buildQueryMethod->invoke($sms)
+        );
     }
-    
+
     public function test_buildQuery_method_should_works_properly_using_http_scheme_and_subdomain()
     {
         $sms = $this->getMockBuilder(SMS::class)
@@ -235,9 +244,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $buildQueryMethod = $reflection->getMethod('buildQuery');
         $buildQueryMethod->setAccessible(true);
 
-        $this->assertEquals('http://matriphe.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
+        $this->assertEquals(
+            'http://matriphe.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&nohp=085225577999&pesan=',
+            $buildQueryMethod->invoke($sms)
+        );
     }
-    
+
     public function test_buildQuery_method_should_fallback_to_https_on_wrong_scheme()
     {
         $sms = $this->getMockBuilder(SMS::class)
@@ -251,6 +263,28 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $buildQueryMethod = $reflection->getMethod('buildQuery');
         $buildQueryMethod->setAccessible(true);
 
-        $this->assertEquals('https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&tipe=reguler&nohp=085225577999&pesan=', $buildQueryMethod->invoke($sms));
+        $this->assertEquals(
+            'https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&nohp=085225577999&pesan=',
+            $buildQueryMethod->invoke($sms)
+        );
+    }
+
+    public function test_buildQuery_method_should_works_with_otp()
+    {
+        $sms = $this->getMockBuilder(SMS::class)
+            ->setConstructorArgs(['john', 'password'])
+            ->setMethods(null)
+            ->getMock();
+
+        $sms->scheme('https')->otp()->text('')->to('085225577999');
+
+        $reflection = new \ReflectionClass(get_class($sms));
+        $buildQueryMethod = $reflection->getMethod('buildQuery');
+        $buildQueryMethod->setAccessible(true);
+
+        $this->assertEquals(
+            'https://reguler.zenziva.net/apps/smsapi.php?userkey=john&passkey=password&nohp=085225577999&pesan=&type=otp',
+            $buildQueryMethod->invoke($sms)
+        );
     }
 }
