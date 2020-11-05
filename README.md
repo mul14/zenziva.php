@@ -1,6 +1,6 @@
 # Zenziva Client for PHP - v2
 
-This is v2, for v1 please check 1.x branch.
+This is v2, for previous version please check [1.x branch](https://github.com/mul14/zenziva.php/tree/1.x).
 
 [Zenziva](https://www.zenziva.id) provide services to send SMS, WhatsApp, and voice message.
 
