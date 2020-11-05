@@ -1,116 +1,50 @@
-# Zenziva SMS Client
+# Zenziva Client for PHP - v2
 
-[Zenziva](https://zenziva.net) SMS client. Read their [docs](http://www.zenziva.id/dokumentasi) for more information.
+This is v2, for v1 please check 1.x branch.
 
-## Installation
+[Zenziva](https://www.zenziva.id) provide services to send SMS, WhatsApp, and voice message.
+
+If this library not working for you, or you found any kind of bugs, please create a new issue.
+
+## Install
 
 Run [composer](http://getcomposer.org)
 
 ```bash
-composer require nasution/zenziva-sms
+composer require nasution/zenziva
 ```
 
 ## Usage
-
-### Standalone usage
 
 Make sure you already have Zenziva account.
 
 ```php
 require 'vendor/autoload.php';
 
-use Nasution\ZenzivaSms\Client as Sms;
+use Nasution\Zenziva\Zenziva;
 
-$sms = new Sms('userkey', 'passkey');
+$zenziva = new Zenziva('userkey', 'passkey');
 
-// Simple usage
-$sms->send('08123456789', 'Halo apa kabar?');
+// SMS
+$zenziva->sms('08123456789', 'Halo');
 
-// Alternative way
-$sms->to('08123456789')
-    ->text('Halo apa kabar?')
-    ->send();
+// WhatsApp
+$zenziva->wa('08123456789', 'Halo');
 
-// SMS masking
-$sms->masking()->send('08123456789', 'Halo apa kabar?');
-
-// For OTP
-$sms->masking()->otp()->send('08123456789', 'This is OTP code');
-
-// With custom sub-domain (if you choose paid for "SMS Center" plan)
-$sms->subdomain('hello')
-    ->to('08123456789')
-    ->text('Halo apa kabar?')
-    ->send();
-
-// Change default URL
-$sms->url('https://reguler.zenziva.co.id/apps/smsapi.php')
-    ->to('08123456789')
-    ->text('Halo')
-    ->send();
+// Voice message
+$zenziva->voice('08123456789', 'Halo');
 ```
-
-### Use with Laravel Notification
-
-Starts from Laravel 5.3, you can use Laravel Notification feature. You need to register the service provider. Open `config/app.php`, add this line inside `providers`.
 
 ```php
-Nasution\ZenzivaSms\NotificationServiceProvider::class,
+// Masking
+$zenziva = new Zenziva('userkey', 'passkey', [
+    'masking' => true,
+]);
 ```
-
-> Note: If you use Laravel 5.5 or higher, you can skip register service provider manually.
-
-Insert this inside your `config/services.php`,
 
 ```php
-'zenziva' => [
-    'userkey' => 'your-userkey',
-    'passkey' => 'your-password',
-    'subdomain' => '',
-    'masking' => false,
-    'scheme' => 'https',
-],
+// {Sms,WhatsApp} Center
+$zenziva = new Zenziva('userkey', 'passkey', [
+    'domain' => 'domain_name.com',
+]);
 ```
-
-Add this method to your `User` model (or any notifiable model),
-
-```php
-public function routeNotificationForZenzivaSms()
-{
-    return $this->phone_number; // Depends on your users table field.
-}
-```
-
-On your Notification class, add this inside via method. Like so
-
-```php
-use Nasution\ZenzivaSms\NotificationChannel as ZenzivaSms;
-
-// ...
-
-public function via($notifiable)
-{
-    return [ZenzivaSms::class];
-}
-```
-
-Now, we are ready to use notification feature in Laravel 5.3
-
-```php
-use App\User;
-use App\Notifications\PingNotification;
-
-Route::get('/', function () {
-
-    // Send notification to all users
-    $users = User::all();
-    \Notification::send($users, new PingNotification);
-
-    // Or just to one user
-    User::find(1)->notify(new PingNotification);
-});
-```
-
-## License
-
-MIT © [Mulia Arifandi Nasution](http://mul14.net)
