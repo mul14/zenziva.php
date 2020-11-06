@@ -9,8 +9,6 @@ class Zenziva
     protected string $userkey;
     protected string $passkey;
     protected array $options;
-    protected string $domain;
-    protected bool $masking;
 
     public function __construct(string $userkey, string $passkey, array $options = [])
     {
@@ -19,7 +17,7 @@ class Zenziva
 
         $this->options = count($options)
             ? $options
-            : [ 'domain' => '', 'masking' => false];
+            : [ 'domain' => '', 'masking' => false, 'whatsapp_id' => ''];
     }
 
     public function sms(string $phone, string $message): object {
@@ -34,10 +32,17 @@ class Zenziva
     public function wa(string $phone, string $message): object {
         $url = $this->url() . '/sendWA/';
 
-        return $this->send($url, [
+        $payload = [
             'nohp' => $phone,
             'pesan' => $message,
-        ]);
+        ];
+
+        if ($this->options['whatsapp_id']) {
+            $url = $this->url() . '/WAsendMsg/';
+            $payload['instance'] = $this->options['whatsapp_id'];
+        }
+
+        return $this->send($url, $payload);
     }
 
     public function voice(string $phone, string $message): object {

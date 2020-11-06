@@ -19,6 +19,8 @@ composer require nasution/zenziva
 Make sure you already have Zenziva account.
 
 ```php
+// Regular
+
 require 'vendor/autoload.php';
 
 use Nasution\Zenziva\Zenziva;
@@ -26,25 +28,39 @@ use Nasution\Zenziva\Zenziva;
 $zenziva = new Zenziva('userkey', 'passkey');
 
 // SMS
-$zenziva->sms('08123456789', 'Halo');
+$zenziva->sms('0812223333', 'Halo');
 
 // WhatsApp
-$zenziva->wa('08123456789', 'Halo');
+$zenziva->wa('6285551111', 'Halo');
 
 // Voice message
-$zenziva->voice('08123456789', 'Halo');
+$zenziva->voice('0812223333', 'Halo');
 ```
 
 ```php
-// Masking
+// SMS Masking
 $zenziva = new Zenziva('userkey', 'passkey', [
     'masking' => true,
 ]);
+
+$zenziva->sms('0812223333', 'Halo');
 ```
 
 ```php
-// {Sms,WhatsApp} Center
+// Zenziva Sms Center
 $zenziva = new Zenziva('userkey', 'passkey', [
     'domain' => 'domain_name.com',
 ]);
+
+$zenziva->sms('0812223333', 'Halo');
+```
+
+```php
+// Zenziva WhatsApp Center
+$zenziva = new Zenziva('userkey', 'passkey', [
+    'domain' => 'domain_name.com',
+    'whatsapp_id' => 'whatsapp_id',
+]);
+
+$zenziva->wa('6285551111', 'Halo');
 ```
