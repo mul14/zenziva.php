@@ -1,7 +1,7 @@
 {
     "name": "nasution/zenziva",
     "description": "Zenziva - Indonesia Online SMS Gateway",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "type": "library",
     "license": "MIT",
     "keywords": ["zenziva", "sms", "whatsapp", "voice-message"],
